@@ -1,31 +1,19 @@
 package kaloyan.state_population_backend.model;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import lombok.Data;
+import org.hibernate.annotations.Immutable;
+import org.hibernate.annotations.Subselect;
 
 @Entity
-@Table(name = "state_population_mv") // Matches the materialized view name
-public class State {
+@Immutable
+@Subselect("SELECT * FROM state_population_mv")
+@Data
+public class StatePopulation {
 
     @Id
-    private String state; // State name as the primary key
+    private String state;
 
-    private long totalPopulation; // Sum of county populations
-
-    // Getters and setters
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public long getTotalPopulation() {
-        return totalPopulation;
-    }
-
-    public void setTotalPopulation(long totalPopulation) {
-        this.totalPopulation = totalPopulation;
-    }
+    private long totalPopulation;
 }
