@@ -6,43 +6,58 @@ import kaloyan.state_population_backend.model.County;
 import kaloyan.state_population_backend.service.CountyApiService;
 import kaloyan.state_population_backend.service.CountyService;
 import kaloyan.state_population_backend.service.MaterializedViewsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class StatePopulationTableBuilder {
 
-    @Autowired
-    CountyApiService apiService;
+    private final CountyApiService apiService;
 
-    @Autowired
-    CountyService countyService;
+    private final CountyService countyService;
 
-    @Autowired
-    MaterializedViewsService materializedViewsService;
+    private final MaterializedViewsService materializedViewsService;
 
-    private static final String viewName = "state_population_mv";
-    private static final String query = """
+    private static final String VIEW_NAME = "state_population_mv";
+    private static final String QUERY = """
             SELECT SUM(population) as total_population, state
             FROM counties
             GROUP BY state
             """;
 
+    private static final int PAGE_SIZE = 1000;
+
+    private List<County> getAllCounties() throws JsonProcessingException {
+        int pageNumber = 0;
+        List<County> counties = new LinkedList<>();
+        Page<County> page;
+        do {
+            page = apiService.fetchCountyAndPopulation(PageRequest.of(pageNumber, PAGE_SIZE));
+            counties.addAll(page.getContent());
+            pageNumber++;
+        } while (!page.isLast());
+
+        return counties;
+    }
 
     @PostConstruct
     public void fetchDataSaveToDatabaseAndCreateMaterializedViews() throws JsonProcessingException {
-        List<County> counties = apiService.fetchCountyAndPopulation();
-        counties.forEach(county -> countyService.upsertCounty(county));
-        materializedViewsService.createMaterializedView(viewName, query);
+        List<County> counties = getAllCounties();
+        counties.forEach(countyService::upsertCounty);
+        materializedViewsService.createMaterializedView(VIEW_NAME, QUERY);
     }
 
     @Scheduled(cron = "0 0 * * * *")
     public void fetchDataSaveToDatabaseAndRefreshMaterializedViews() throws JsonProcessingException {
-        List<County> counties = apiService.fetchCountyAndPopulation();
-        counties.forEach(county -> countyService.upsertCounty(county));
-        materializedViewsService.refreshMaterializedView(viewName);
+        List<County> counties = getAllCounties();
+        counties.forEach(countyService::upsertCounty);
+        materializedViewsService.refreshMaterializedView(VIEW_NAME);
     }
 }
