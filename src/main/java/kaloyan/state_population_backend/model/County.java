@@ -1,8 +1,14 @@
 package kaloyan.state_population_backend.model;
 
-import jakarta.persistence.*;
-import kaloyan.state_population_backend.utils.State;
-import kaloyan.state_population_backend.utils.StateConverter;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+
 import lombok.Data;
 
 @Entity
@@ -18,8 +24,8 @@ public class County {
     private String name;
 
     @Column(nullable = false)
-    @Convert(converter = StateConverter.class)
-    private State state;
+    private String state;
 
-    private long population;
+    @Nullable
+    private Long population;
 }

@@ -2,18 +2,16 @@ package kaloyan.state_population_backend.service;
 
 import kaloyan.state_population_backend.model.StatePopulation;
 import kaloyan.state_population_backend.repository.StatePopulationRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class StatePopulationServiceImpl implements StatePopulationService{
 
     private final StatePopulationRepository statePopulationRepository;
-
-    public StatePopulationServiceImpl(StatePopulationRepository statePopulationRepository) {
-        this.statePopulationRepository = statePopulationRepository;
-    }
 
     @Override
     public List<StatePopulation> getAllStatePopulations() {

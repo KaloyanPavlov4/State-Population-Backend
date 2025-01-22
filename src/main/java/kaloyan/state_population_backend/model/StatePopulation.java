@@ -1,5 +1,6 @@
 package kaloyan.state_population_backend.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class StatePopulation {
     @Id
     private String state;
 
-    private long totalPopulation;
+    @Nullable
+    private Long totalPopulation;
 }

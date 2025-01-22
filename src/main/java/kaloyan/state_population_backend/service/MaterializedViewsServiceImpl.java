@@ -12,7 +12,7 @@ public class MaterializedViewsServiceImpl implements MaterializedViewsService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private static final String createQuery = """
+    private static final String CREATE_QUERY = """
             DO $$
             BEGIN
                 IF NOT EXISTS (
@@ -24,22 +24,24 @@ public class MaterializedViewsServiceImpl implements MaterializedViewsService {
                         CREATE MATERIALIZED VIEW %s AS
                         %s
                     $view$;
+                  ELSE
+                    EXECUTE $view$ REFRESH MATERIALIZED VIEW %s $view$;
                 END IF;
             END $$;""";
 
-    private static final String refreshQuery = "REFRESH MATERIALIZED VIEW CONCURRENTLY %s";
+    private static final String REFRESH_QUERY = "REFRESH MATERIALIZED VIEW %s";
 
     @Override
     @Modifying
     @Transactional
     public int createMaterializedView(String viewName, String query) {
-        return entityManager.createNativeQuery(String.format(createQuery,viewName,viewName,query)).executeUpdate();
+        return entityManager.createNativeQuery(String.format(CREATE_QUERY,viewName,viewName,query,viewName)).executeUpdate();
     }
 
     @Override
     @Modifying
     @Transactional
     public int refreshMaterializedView(String viewName) {
-        return entityManager.createNativeQuery(String.format(refreshQuery, viewName)).executeUpdate();
+        return entityManager.createNativeQuery(String.format(REFRESH_QUERY, viewName)).executeUpdate();
     }
 }
