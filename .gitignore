@@ -233,3 +233,6 @@ README.html
 *.iml
 .idea
 .exercism
+
+### Postgres data from container ###
+/postgres-data/
