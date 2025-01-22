@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface StatePopulationRepository extends JpaRepository<StatePopulation, String> {
+
     @Query(value = "SELECT * FROM state_population_mv", nativeQuery = true)
     List<StatePopulation> findAllStatePopulations();
 

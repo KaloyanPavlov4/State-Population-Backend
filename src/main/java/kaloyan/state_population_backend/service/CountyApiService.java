@@ -18,8 +18,8 @@ public class CountyApiService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
 
-    private final String API_URL = "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/USA_Census_Counties/FeatureServer/0";
-    private final String QUERY_COUNTY_NAME_POPULATION_STATE = "/query?where=1=1&outFields=STATE_NAME,+NAME,+POPULATION&returnGeometry=false&featureEncoding=esriDefault&f=pjson";
+    private static final String API_URL = "https://services.arcgis.com/P3ePLMYs2RVChkJx/ArcGIS/rest/services/USA_Census_Counties/FeatureServer/0";
+    private static final String QUERY_COUNTY_NAME_POPULATION_STATE = "/query?where=1=1&outFields=STATE_NAME,+NAME,+POPULATION&returnGeometry=false&featureEncoding=esriDefault&f=pjson";
 
     public CountyApiService(RestTemplate restTemplate, ObjectMapper objectMapper) {
         this.restTemplate = restTemplate;

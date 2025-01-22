@@ -2,6 +2,7 @@ package kaloyan.state_population_backend.utils;
 
 import lombok.Getter;
 
+@Getter
 public enum State {
 
     ALABAMA("Alabama"),
@@ -55,12 +56,7 @@ public enum State {
     WISCONSIN("Wisconsin"),
     WYOMING("Wyoming");
 
-    @Getter
     private final String stateName;
-
-    public String getStateName() {
-        return stateName;
-    }
 
     State(String stateName) {
         this.stateName = stateName;

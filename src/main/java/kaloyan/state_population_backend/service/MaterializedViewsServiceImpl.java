@@ -12,7 +12,7 @@ public class MaterializedViewsServiceImpl implements MaterializedViewsService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final String createQuery = """
+    private static final String createQuery = """
             DO $$
             BEGIN
                 IF NOT EXISTS (
@@ -27,7 +27,7 @@ public class MaterializedViewsServiceImpl implements MaterializedViewsService {
                 END IF;
             END $$;""";
 
-    private final String refreshQuery = "REFRESH MATERIALIZED VIEW CONCURRENTLY %s";
+    private static final String refreshQuery = "REFRESH MATERIALIZED VIEW CONCURRENTLY %s";
 
     @Override
     @Modifying
