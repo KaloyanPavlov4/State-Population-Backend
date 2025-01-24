@@ -48,14 +48,14 @@ public class StatePopulationTableBuilder {
     }
 
     @PostConstruct
-    public void fetchDataSaveToDatabaseAndCreateMaterializedViews() throws JsonProcessingException {
+    private void fetchDataSaveToDatabaseAndCreateMaterializedViews() throws JsonProcessingException {
         List<County> counties = getAllCounties();
         counties.forEach(countyService::upsertCounty);
         materializedViewsService.createMaterializedView(VIEW_NAME, QUERY);
     }
 
     @Scheduled(cron = "0 0 * * * *")
-    public void fetchDataSaveToDatabaseAndRefreshMaterializedViews() throws JsonProcessingException {
+    private void fetchDataSaveToDatabaseAndRefreshMaterializedViews() throws JsonProcessingException {
         List<County> counties = getAllCounties();
         counties.forEach(countyService::upsertCounty);
         materializedViewsService.refreshMaterializedView(VIEW_NAME);
