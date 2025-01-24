@@ -15,11 +15,11 @@ public class StatePopulationServiceImpl implements StatePopulationService{
 
     @Override
     public List<StatePopulation> getAllStatePopulations() {
-        return statePopulationRepository.findAllStatePopulations();
+        return statePopulationRepository.findAll();
     }
 
     @Override
     public StatePopulation getPopulationByState(String state) {
-        return statePopulationRepository.findByStateName(state);
+        return statePopulationRepository.findByStateIgnoreCase(state);
     }
 }
