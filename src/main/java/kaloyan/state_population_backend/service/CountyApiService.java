@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kaloyan.state_population_backend.model.County;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class CountyApiService {
 
     private final RestTemplate restTemplate;
@@ -26,12 +28,7 @@ public class CountyApiService {
     private static final String PARAMETER_OFFSET = "&resultOffset=%s";
     private static final String PARAMETER_RECORDCOUNT = "&resultRecordCount=%s";
 
-    private Integer totalCount = null;
-
-    public CountyApiService(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
-    }
+    private static Integer totalCount = null;
 
     public Integer getTotalCount() throws JsonProcessingException {
         if(totalCount == null) {
