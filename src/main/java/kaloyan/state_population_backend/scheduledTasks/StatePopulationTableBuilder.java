@@ -54,7 +54,7 @@ public class StatePopulationTableBuilder {
         materializedViewsService.createMaterializedView(VIEW_NAME, QUERY);
     }
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     private void fetchDataSaveToDatabaseAndRefreshMaterializedViews() throws JsonProcessingException {
         List<County> counties = getAllCounties();
         counties.forEach(countyService::upsertCounty);
