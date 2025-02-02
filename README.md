@@ -4,7 +4,7 @@ The recommended way is by running the docker compose file
 
 Another way is to create a postgreSQL database and user.
 Add them to src/main/resources/application.properties
-URL format: jdbc:postgresql://localhost:<PORT>/<DATABASE NAME>
+URL format: jdbc:postgresql://localhost:PORT/DATABASE NAME
 
 ## Paths
 ```
